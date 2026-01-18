@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khushi Airlines – Cab Booking Service</title>
+  <meta name="description" content="Affordable and reliable cab booking service. Book local, outstation and airport cabs easily." />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f7f7f7; color: #222; }
+    header { background: linear-gradient(135deg, #ffb703, #fb8500); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { color: #000; font-size: 28px; }
+    nav a { margin-left: 20px; text-decoration: none; color: #000; font-weight: 500; }
+
+    .hero { padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .hero h2 { font-size: 40px; margin-bottom: 20px; }
+    .hero p { font-size: 18px; margin-bottom: 30px; }
+    .hero button { padding: 15px 30px; font-size: 16px; background: #219ebc; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+
+    .booking { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .booking h3 { margin-bottom: 20px; }
+    .booking input, .booking select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ccc; }
+    .booking button { width: 100%; padding: 14px; background: #fb8500; color: #fff; border: none; border-radius: 10px; font-size: 16px; }
+
+    .services { padding: 60px 40px; background: #fff; }
+    .services h2 { text-align: center; margin-bottom: 40px; }
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
+    .service { background: #f7f7f7; padding: 25px; border-radius: 14px; text-align: center; }
+
+    .about, .contact { padding: 60px 40px; }
+    footer { background: #023047; color: #fff; text-align: center; padding: 20px; }
+
+    @media(max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Khushi Airlines</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h2>Book a Cab in Minutes</h2>
+    <p>Safe, affordable and reliable cab booking service for local, outstation and airport rides.</p>
+    <a href="https://wa.me/919599471676" target="_blank"><button>Book on WhatsApp</button></a>
+  </div>
+
+  <div class="booking">
+    <h3>Quick Booking</h3>
+    <input id="pickup" type="text" placeholder="Pickup Location (Google Maps)" />
+    <input id="drop" type="text" placeholder="Drop Location (Google Maps)" />
+    <select id="cabType">
+      <option value="">Select Cab Type</option>
+      <option value="mini">Mini (₹12/km)</option>
+      <option value="sedan">Sedan (₹15/km)</option>
+      <option value="suv">SUV (₹18/km)</option>
+    </select>
+    <p id="fare" style="margin:10px 0;font-weight:500;">Estimated Fare: —</p>
+    <a id="whatsappLink" href="https://wa.me/918580917363" target="_blank">
+      <button>Book Now on WhatsApp</button>
+    </a>
+    <p style="margin-top:10px;font-size:14px;">📍 Uses Google Maps locations</p>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <h2>Our Services</h2>
+  <div class="service-grid">
+    <div class="service">Local City Rides</div>
+    <div class="service">Outstation Trips</div>
+    <div class="service">Airport Transfers</div>
+    <div class="service">Corporate Cabs</div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <h2>About Us</h2>
+  <p>Khushi Airlines is a startup focused on providing affordable, on-time and safe transportation services across cities. Our professional drivers and well-maintained vehicles ensure a smooth journey every time.</p>
+</section>
+
+<section id="contact" class="contact">
+  <h2>Contact Us</h2>
+  <p>📞 Phone: +91 95994 71676 / +91 85809 17363</p>
+  <p>📧 Email: khushiairlines@gmail.com</p>
+  <p>📍 Location: Himachal Pradesh, India</p>
+</section>
+
+<footer>
+  <p>© 2026 Khushi Airlines. All Rights Reserved.</p>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/918580917363" target="_blank" style="position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;padding:14px 18px;border-radius:50px;text-decoration:none;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.3);z-index:999;">💬 WhatsApp</a>
+
+<script>
+  const pickup = document.getElementById('pickup');
+  const drop = document.getElementById('drop');
+  const wa = document.getElementById('whatsappLink');
+  const cabType = document.getElementById('cabType');
+  const fareEl = document.getElementById('fare');
+
+  function updateLink() {
+    const p = pickup.value || 'Not provided';
+    const d = drop.value || 'Not provided';
+    const cab = cabType.value;
+
+    let rate = 0;
+    if (cab === 'mini') rate = 12;
+    if (cab === 'sedan') rate = 15;
+    if (cab === 'suv') rate = 18;
+
+    const distance = 10; // demo distance in KM
+
+    // Minimum fare rules
+    let minFare = 0;
+    if (cab === 'mini') minFare = 300;
+    if (cab === 'sedan') minFare = 400;
+    if (cab === 'suv') minFare = 600;
+
+    let fare = rate ? rate * distance : 0;
+    if (fare && fare < minFare) fare = minFare;
+
+    fareEl.innerText = fare ? `Approx Fare: ₹${fare}` : 'Approx Fare: —';
+
+    const message = `Cab Booking Request\nPickup: ${p}\nDrop: ${d}\nCab: ${cab || 'Not selected'}\nEstimated Fare: ₹${fare || '—'}`;
+    wa.href = `https://wa.me/918580917363?text=${encodeURIComponent(message)}`;
+  }
+
+  pickup.addEventListener('input', updateLink);
+  drop.addEventListener('input', updateLink);
+  cabType.addEventListener('change', updateLink);
+</script>
+</body>
+</html>
