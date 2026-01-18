@@ -57,19 +57,19 @@
 
   <div class="booking">
     <h3>Quick Booking</h3>
-    <input id="pickup" type="text" placeholder="Pickup Location (Google Maps)" />
-    <input id="drop" type="text" placeholder="Drop Location (Google Maps)" />
+    <input id="pickup" type="text" placeholder="Pickup: Area, Landmark, City (e.g. ISBT Shimla)" />
+    <input id="drop" type="text" placeholder="Drop: Area, Landmark, City (e.g. Mall Road Shimla)" />
     <select id="cabType">
       <option value="">Select Cab Type</option>
       <option value="mini">Mini (₹12/km)</option>
       <option value="sedan">Sedan (₹15/km)</option>
       <option value="suv">SUV (₹18/km)</option>
     </select>
-    <p id="fare" style="margin:10px 0;font-weight:500;">Estimated Fare: —</p>
+    
     <a id="whatsappLink" href="https://wa.me/918580917363" target="_blank">
       <button>Book Now on WhatsApp</button>
     </a>
-    <p style="margin-top:10px;font-size:14px;">📍 Uses Google Maps locations</p>
+    <p style="margin-top:10px;font-size:14px;line-height:1.4;">📍 Please type <b>Area / Landmark / City</b><br>Example: <i>ISBT Shimla</i> → <i>Mall Road Shimla</i></p>
   </div>
 </section>
 
@@ -107,32 +107,27 @@
   const drop = document.getElementById('drop');
   const wa = document.getElementById('whatsappLink');
   const cabType = document.getElementById('cabType');
-  const fareEl = document.getElementById('fare');
+  
 
   function updateLink() {
-    const p = pickup.value || 'Not provided';
-    const d = drop.value || 'Not provided';
+    const p = pickup.value.trim();
+    const d = drop.value.trim();
     const cab = cabType.value;
 
+    if (!p || !d) {
+      return;
+    }
+
+    // Fare calculation removed (Stage 1 without price display)
     let rate = 0;
     if (cab === 'mini') rate = 12;
     if (cab === 'sedan') rate = 15;
     if (cab === 'suv') rate = 18;
 
-    const distance = 10; // demo distance in KM
-
-    // Minimum fare rules
-    let minFare = 0;
-    if (cab === 'mini') minFare = 300;
-    if (cab === 'sedan') minFare = 400;
-    if (cab === 'suv') minFare = 600;
-
-    let fare = rate ? rate * distance : 0;
-    if (fare && fare < minFare) fare = minFare;
-
-    fareEl.innerText = fare ? `Approx Fare: ₹${fare}` : 'Approx Fare: —';
-
-    const message = `Cab Booking Request\nPickup: ${p}\nDrop: ${d}\nCab: ${cab || 'Not selected'}\nEstimated Fare: ₹${fare || '—'}`;
+    const message = `Cab Booking Request
+Pickup: ${p}
+Drop: ${d}
+Cab Type: ${cab || 'Not selected'}`;
     wa.href = `https://wa.me/918580917363?text=${encodeURIComponent(message)}`;
   }
 
